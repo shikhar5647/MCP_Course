@@ -93,3 +93,6 @@ def extract_info(paper_id:str)->str:
                     continue
     
     return f"There's no saved information related to paper {paper_id}."
+
+if __name__=="__main__":
+    mcp.run(transport='stdio')
