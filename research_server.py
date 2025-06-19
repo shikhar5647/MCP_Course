@@ -8,7 +8,7 @@ PAPER_DIR="papers"
 
 mcp=FastMCP("research")
 
-@mcp.tool
+@mcp.tool()
 def search_papers(topic: str, max_results: int = 5) -> List[str]:
     """
     Search for papers on arXiv based on a topic and store their information.
@@ -67,7 +67,7 @@ def search_papers(topic: str, max_results: int = 5) -> List[str]:
     
     return paper_ids
 
-@mcp.tool
+@mcp.tool()
 def extract_info(paper_id:str)->str:
     """
     Search for information about a specific paper across all topic directories.
