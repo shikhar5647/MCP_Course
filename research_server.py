@@ -67,3 +67,15 @@ def search_papers(topic: str, max_results: int = 5) -> List[str]:
     
     return paper_ids
 
+@mcp.tool
+def extract_info(paper_id:str)->str:
+    """
+    Search for information about a specific paper across all topic directories.
+    
+    Args:
+        paper_id: The ID of the paper to look for
+        
+    Returns:
+        JSON string with paper information if found, error message if not found
+    """
+    
