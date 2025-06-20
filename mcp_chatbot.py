@@ -20,11 +20,26 @@ class MCP_Chatbot:
         messages = [{'role':'user', 'content':query}]
         response = client.models.generate_content(
                 model="gemini-2.5-pro-exp-03-25",
-                contents=prompt,
                 config=types.GenerateContentConfig(
                     temperature=0,
-                    tools=available_tools,
+                    tools=self.available_toolsavailable_tools,
                 ),
             )
         process_query = True
+        while process_query:
+            assistant_content = []
+            for content in response.content:
+                if content.type =='text':
+                    print(content.text)
+                    assistant_content.append(content)
+                    if(len(response.content) == 1):
+                        process_query= False
+                elif content.type == 'tool_use':
+                    assistant_content.append(content)
+                    messages.append({'role':'assistant', 'content':assistant_content})
+                    tool_id = content.id
+                    tool_args = content.input
+                    tool_name = content.name
+    
+                    print(f"Calling tool {tool_name} with args {tool_args}")
     
