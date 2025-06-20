@@ -6,3 +6,11 @@ from mcp import StdioServerParameters,types, ClientSession
 from dotenv import load_dotenv
 from google import genai 
 from google.genai import types 
+
+nest_asyncio.apply()
+
+class MCP_Chatbot:
+    def __init__(self):
+        self.available_tools: List[dict] = []
+        self.session: ClientSession = None
+    
