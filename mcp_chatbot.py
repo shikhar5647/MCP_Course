@@ -6,10 +6,10 @@ from mcp import StdioServerParameters,types, ClientSession
 from dotenv import load_dotenv
 from google import genai 
 from google.genai import types 
-
+import os
 nest_asyncio.apply()
-
-client = genai.Client(api_key="")
+load_dotenv()
+client = genai.Client(os.getenv['GEMINI_API_KEY'])
 
 class MCP_Chatbot:
     def __init__(self):
