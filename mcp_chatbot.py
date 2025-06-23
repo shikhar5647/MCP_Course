@@ -52,10 +52,13 @@ class MCP_Chatbot:
                                           }
                                       ]
                                     })
-                    response = self.anthropic.messages.create(max_tokens = 2024,
-                                      model = 'claude-3-7-sonnet-20250219', 
-                                      tools = self.available_tools,
-                                      messages = messages) 
+                    response = client.models.generate_content(
+                        model="gemini-2.5-pro-exp-03-25",
+                        config=types.GenerateContentConfig(
+                            temperature=0,
+                            tools=self.available_toolsavailable_tools,
+                            ),
+                        )
                     
                     if(len(response.content) == 1 and response.content[0].type == "text"):
                         print(response.content[0].text)
