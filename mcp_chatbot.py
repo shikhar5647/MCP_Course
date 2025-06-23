@@ -9,7 +9,7 @@ from google.genai import types
 import os
 nest_asyncio.apply()
 load_dotenv()
-client = genai.Client(os.getenv['GEMINI_API_KEY'])
+client = genai.Client(os.getenv('GEMINI_API_KEY'))
 
 class MCP_Chatbot:
     def __init__(self):
