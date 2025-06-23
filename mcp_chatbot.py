@@ -108,3 +108,11 @@ class MCP_Chatbot:
                 } for tool in response.tools]
     
                 await self.chat_loop()
+                
+async def main():
+    chatbot = MCP_ChatBot()
+    await chatbot.connect_to_server_and_run()
+  
+
+if __name__ == "__main__":
+    asyncio.run(main())
