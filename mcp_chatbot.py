@@ -64,3 +64,20 @@ class MCP_Chatbot:
                         print(response.content[0].text)
                         process_query= False
     
+    async def chat_loop(self):
+        """Run an interactive chat loop"""
+        print("\nMCP Chatbot Started!")
+        print("Type your queries or 'quit' to exit.")
+        
+        while True:
+            try:
+                query = input("\nQuery: ").strip()
+        
+                if query.lower() == 'quit':
+                    break
+                    
+                await self.process_query(query)
+                print("\n")
+                    
+            except Exception as e:
+                print(f"\nError: {str(e)}")
