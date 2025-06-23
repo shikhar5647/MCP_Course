@@ -42,4 +42,22 @@ class MCP_Chatbot:
                     tool_name = content.name
     
                     print(f"Calling tool {tool_name} with args {tool_args}")
+                    result = await self.session.call_tool(tool_name, arguments=tool_args)
+                    messages.append({"role": "user", 
+                                      "content": [
+                                          {
+                                              "type": "tool_result",
+                                              "tool_use_id":tool_id,
+                                              "content": result.content
+                                          }
+                                      ]
+                                    })
+                    response = self.anthropic.messages.create(max_tokens = 2024,
+                                      model = 'claude-3-7-sonnet-20250219', 
+                                      tools = self.available_tools,
+                                      messages = messages) 
+                    
+                    if(len(response.content) == 1 and response.content[0].type == "text"):
+                        print(response.content[0].text)
+                        process_query= False
     
