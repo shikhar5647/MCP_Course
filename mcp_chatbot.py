@@ -7,24 +7,26 @@ from dotenv import load_dotenv
 from google import genai 
 from google.genai import types 
 import os
+from google.generativeai.types import GenerateContentConfig
 nest_asyncio.apply()
 load_dotenv()
-client = genai.Client(os.getenv('GEMINI_API_KEY'))
+genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
 
 class MCP_Chatbot:
     def __init__(self):
         self.available_tools: List[dict] = []
         self.session: ClientSession = None
+        self.model = genai.GenerativeModel("gemini-2.5-pro-exp-03-25")
         
     async def process_query(self, query):
         messages = [{'role':'user', 'content':query}]
-        response = client.models.generate_content(
-                model="gemini-2.5-pro-exp-03-25",
-                config=types.GenerateContentConfig(
-                    temperature=0,
-                    tools=self.available_toolsavailable_tools,
-                ),
+        response = self.model.generate_content(
+            messages,
+            generation_config=GenerateContentConfig(
+                temperature=0,
+                tools=self.available_tools,
             )
+        )
         process_query = True
         while process_query:
             assistant_content = []
@@ -52,12 +54,12 @@ class MCP_Chatbot:
                                           }
                                       ]
                                     })
-                    response = client.models.generate_content(
-                        model="gemini-2.5-pro-exp-03-25",
-                        config=types.GenerateContentConfig(
+                    response = self.model.generate_content(
+                        messages,
+                        generation_config=GenerateContentConfig(
                             temperature=0,
-                            tools=self.available_toolsavailable_tools,
-                            ),
+                            tools=self.available_tools,
+                            )
                         )
                     
                     if(len(response.content) == 1 and response.content[0].type == "text"):
