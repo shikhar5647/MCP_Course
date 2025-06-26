@@ -26,4 +26,31 @@ class MCP_Chatbot:
         self.exit_stack = AsyncExitStack() # new
         self.model = genai.GenerativeModel("gemini-2.5-pro-exp-03-25")
         
-    
+    async def connect_to_server(self, server_name: str, server_config: dict) -> None:
+        """Connect to a single MCP server."""
+        try:
+            server_params = StdioServerParameters(**server_config)
+            stdio_transport = await self.exit_stack.enter_async_context(
+                stdio_client(server_params)
+            ) # new
+            read, write = stdio_transport
+            session = await self.exit_stack.enter_async_context(
+                ClientSession(read, write)
+            ) # new
+            await session.initialize()
+            self.sessions.append(session)
+            
+            # List available tools for this session
+            response = await session.list_tools()
+            tools = response.tools
+            print(f"\nConnected to {server_name} with tools:", [t.name for t in tools])
+            
+            for tool in tools: # new
+                self.tool_to_session[tool.name] = session
+                self.available_tools.append({
+                    "name": tool.name,
+                    "description": tool.description,
+                    "input_schema": tool.inputSchema
+                })
+        except Exception as e:
+            print(f"Failed to connect to {server_name}: {e}")
