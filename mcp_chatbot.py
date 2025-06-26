@@ -9,7 +9,7 @@ from google.genai import types
 import os
 from contextlib import AsyncExitStack
 import json
-from google.generativeai.types import GenerateContentConfig
+from google.genai.types import GenerateContentConfig
 load_dotenv()
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
 
