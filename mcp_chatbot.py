@@ -141,3 +141,11 @@ class MCP_Chatbot:
     async def cleanup(self): # new
         """Cleanly close all resources using AsyncExitStack."""
         await self.exit_stack.aclose()
+        
+async def main():
+    chatbot = MCP_ChatBot()
+    try:
+        await chatbot.connect_to_servers() 
+        await chatbot.chat_loop()
+    finally:
+        await chatbot.cleanup() 
