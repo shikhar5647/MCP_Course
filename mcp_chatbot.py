@@ -68,3 +68,13 @@ class MCP_Chatbot:
         except Exception as e:
             print(f"Error loading server configuration: {e}")
             raise
+        
+    async def process_query(self, query):
+        messages = [{'role':'user', 'content':query}]
+        response = self.model.generate_content(
+            messages=messages,
+            geasyncneration_config=GenerateContentConfig(
+                temperature=0,
+                tools=self.available_tools,
+            )
+        )
