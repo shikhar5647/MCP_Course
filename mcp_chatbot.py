@@ -54,3 +54,17 @@ class MCP_Chatbot:
                 })
         except Exception as e:
             print(f"Failed to connect to {server_name}: {e}")
+            
+    async def connect_to_servers(self): # new
+        """Connect to all configured MCP servers."""
+        try:
+            with open("server_config.json", "r") as file:
+                data = json.load(file)
+            
+            servers = data.get("mcpServers", {})
+            
+            for server_name, server_config in servers.items():
+                await self.connect_to_server(server_name, server_config)
+        except Exception as e:
+            print(f"Error loading server configuration: {e}")
+            raise
