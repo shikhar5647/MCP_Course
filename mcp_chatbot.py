@@ -20,8 +20,10 @@ class ToolDefinition(TypedDict):
 
 class MCP_Chatbot:
     def __init__(self):
-        self.available_tools: List[dict] = []
-        self.session: ClientSession = None
+        self.available_tools: List[ToolDefinition] = [] # new
+        self.tool_to_session: Dict[str, ClientSession] = {} # new
+        self.sessions: List[ClientSession] = [] # new
+        self.exit_stack = AsyncExitStack() # new
         self.model = genai.GenerativeModel("gemini-2.5-pro-exp-03-25")
         
     async def process_query(self, query):
