@@ -96,3 +96,26 @@ class MCP_Chatbot:
                     
     
                     print(f"Calling tool {tool_name} with args {tool_args}")
+                    # Call a tool
+                    session = self.tool_to_session[tool_name] # new
+                    result = await session.call_tool(tool_name, arguments=tool_args)
+                    messages.append({"role": "user", 
+                                      "content": [
+                                          {
+                                              "type": "tool_result",
+                                              "tool_use_id":tool_id,
+                                              "content": result.content
+                                          }
+                                      ]
+                                    })
+                    response = self.model.generate_content(
+                        messages=messages,
+                        geasyncneration_config=GenerateContentConfig(
+                            temperature=0,
+                            tools=self.available_tools,
+                            )
+                        ) 
+                    
+                    if(len(response.content) == 1 and response.content[0].type == "text"):
+                        print(response.content[0].text)
+                        process_query= False
