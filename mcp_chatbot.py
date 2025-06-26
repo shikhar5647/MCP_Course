@@ -149,3 +149,6 @@ async def main():
         await chatbot.chat_loop()
     finally:
         await chatbot.cleanup() 
+        
+if __name__ == "__main__":
+    asyncio.run(main())
